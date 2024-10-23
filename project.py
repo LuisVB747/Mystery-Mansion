@@ -135,6 +135,8 @@ def Quit():
 def ProcessCommand(command, current_room, inventory, hiding):
     if command == 'm':
         Manual()
+    elif command in ['n', 's', 'e', 'w']:
+        current_room = Move(current_room, command)
     elif command == 'q':
         Quit()
     else:
