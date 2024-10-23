@@ -55,7 +55,17 @@ room_objects = {
 #       room's description (use `room_descriptions`). If invalid,
 #       print "You can't go that way."
 def Move(current_room, command):
-    print("Remove me and add your code here")
+    if command in ['n', 's', 'e', 'w']:
+        next_room = rooms[current_room].get(command)
+
+        if next_room is not None:
+            current_room = next_room
+            print(room_descriptions[current_room])
+        else:
+            print('You cant go that way.')
+    else:
+        print("Invalid command. Use 'n', 's', 'e', or 'w'")
+
     return current_room
 
 
