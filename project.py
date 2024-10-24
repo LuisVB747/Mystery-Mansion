@@ -1,5 +1,6 @@
 # Hello, Introduction to Programming Students! Welcome to PA2!
 # Your task is to implement the necessary functions in this file.
+from io import IOBase
 
 # In this assignment, we will work with dictionaries. Dictionaries are a
 # data structure used to store data in key-value pairs.
@@ -67,42 +68,82 @@ def Move(current_room, command):
         print("Invalid command. Use 'n', 's', 'e', or 'w'")
 
     return current_room
+    #done
 
 
 # TODO: Implement `OpenFrontDoor`. This function checks if the player
 #       wins the game. If the player is in the 'Grand Hall' and has 5 items
 #       in the inventory, print a victory message and call `exit()`.
 def OpenFrontDoor(inventory, current_room):
-    print("Remove me and add your code here")
+    if current_room == "Grand Hall" and len(inventory) > 5:
+        print("Congrats, you have opened the front door and finally escaped the house")
+        exit()
+    else:
+        print("You can't open the front door yet. Make sure you're in the Grand Hall and have 5 items.")
+    #done
 
 
 # TODO: Implement `OpenSecretRoom`. This function opens the secret room
 #       if the player is in the Garden and possesses the "mysterious hidden key".
 def OpenSecretRoom(current_room, inventory):
-    print("Remove me and add your code here")
+    if current_room == "Garden" and "mysterious hidden key" in inventory:
+        print("You have unlocked the secret room")
+        return "Secret Room"
+    else:
+        print("You can't open the Secret Room yet.")
+        return current_room
+    #done
 
 # TODO: Implement `Get`. This function allows the player to pick up an item
 #       in the current room, if it hasn't been picked up yet. Add the item
 #       to the player's inventory and mark it as collected.
 def Get(current_room, inventory):
-    print("Remove me and add your code here")
+    if current_room in room_objects:
+        item_inf = room_objects[current_room]
+        if not item_inf['in_inventory']:
+            inventory.append(item_inf["item"])
+            item_inf['in_inventory'] = True
+            print(f"You have picked up: {item_info['item']}")
+        else:
+            print("You've already picked up this item.")
+
+    else:
+    print("There are no items here")
+    #done
 
 # TODO: Implement `ShowInventory`. This function displays all items in the
 #       player's inventory.
 def ShowInventory(inventory):
-    print("Remove me and add your code here")
-
+    if inventory:
+        print('You currently have:')
+        for item in inventory:
+            print(f'-{item}')
+    else:
+        print("You have nothing in your inventory")
+    #done
 
 # TODO: Implement `Read`. This function allows the player to read the
 #       "ancient_book of secrets" if it's in the inventory.
 def Read(inventory):
-    print("Remove me and add your code here")
+    if 'ancient_book of secrets' in inventory:
+        print('''Where the star shower you'll see
+        The secrets from you I wont keep.
+        ''')
+    else:
+        print("You don't have anything to read")
+    #done
 
 # TODO: Implement `ToggleHide`. This function toggles the player's hiding
 #       state, printing the appropriate message.
 def ToggleHide(hiding):
-    print("Remove me and add your code here")
-    return False
+    if hiding:
+        print("You're in trouble now")
+        return False
+
+
+    else:
+        print("You're now one with the shadows")
+        return True
 
 
 # Available Commands -------------------------------------------+
@@ -135,6 +176,8 @@ def Quit():
 def ProcessCommand(command, current_room, inventory, hiding):
     if command == 'm':
         Manual()
+    elif command in ['n', 's', 'e', 'w']:
+        current_room = Move(current_room, command)
     elif command == 'q':
         Quit()
     else:
