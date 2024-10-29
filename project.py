@@ -180,6 +180,18 @@ def ProcessCommand(command, current_room, inventory, hiding):
         current_room = Move(current_room, command)
     elif command == 'q':
         Quit()
+    elif command == 'o':
+        OpenFrontDoor(inventory, current_room)
+    elif command == 'g':
+        current_room = Get(current_room, inventory)
+    elif command == 'i':
+        ShowInventory(inventory)
+    elif command == 'r':
+        Read(inventory)
+    elif command == 'h':
+        hiding = ToggleHide(hiding)
+    elif current_room == "Garden" and command == 'g':
+        current_room = OpenSecretRoom(current_room, inventory)
     else:
         print("Invalid command.")
 
