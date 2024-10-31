@@ -108,7 +108,7 @@ def Get(current_room, inventory):
             print("You've already picked up this item.")
 
     else:
-    print("There are no items here")
+        print("There are no items here")
     #done
 
 # TODO: Implement `ShowInventory`. This function displays all items in the
@@ -200,8 +200,19 @@ def ProcessCommand(command, current_room, inventory, hiding):
 # TASK 3 GHOST INTERACTIONS -------------------------------------------+
 # TODO: Implement `GhostEncounterDinningRoom`. This function presents
 #       the player with a riddle and checks if they solve it correctly.
-def GhostEncounterDinningRoom():
-    print("Remove me and add your code here")
+def GhostEncounterDinningRoom(current_room):
+    if current_room == 'Dining Room':
+        print('''You have encounter the ghost! The ghost presents you a riddle:
+        "In the shadows, I lurk at night,
+        with my haunting, presence, I bring fright.
+        Count the bones of the dead, you'll see,
+        What number am I, as eerie as can be?"''')
+        answer = input('What will you respond?')
+        if answer != '206':
+            print("You're wrong. The ghost has decided to kill you because of your ignorance")
+            Quit()
+        else:
+            print("You're correct. The ghost has decided to let you go.")
 
 # TASK 5 MORE GHOSTS -------------------------------------------+
 # TODO: Implement `GhostEncounterLibraryRoom`. This function tells

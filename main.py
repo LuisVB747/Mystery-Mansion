@@ -15,7 +15,7 @@ def Main():
         command = input("> ")
         current_room, hiding = ProcessCommand(command, current_room, inventory, hiding)
         if current_room == 'Dining Room' and not ghost_encountered_dining_room:
-            GhostEncounterDinningRoom()
+            GhostEncounterDinningRoom(current_room)
             ghost_encountered_dining_room = True
         if current_room == 'Library' and not ghost_encountered_library_room:
             GhostEncounterLibraryRoom()
