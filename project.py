@@ -103,13 +103,14 @@ def Get(current_room, inventory):
         if not item_inf['in_inventory']:
             inventory.append(item_inf["item"])
             item_inf['in_inventory'] = True
-            print(f"You have picked up: {item_info['item']}")
+            print(f"You have picked up: {item_inf['item']}")
         else:
             print("You've already picked up this item.")
 
     else:
         print("There are no items here")
-    #done
+
+    return current_room
 
 # TODO: Implement `ShowInventory`. This function displays all items in the
 #       player's inventory.
