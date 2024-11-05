@@ -218,9 +218,19 @@ def GhostEncounterDinningRoom(current_room):
 # TASK 5 MORE GHOSTS -------------------------------------------+
 # TODO: Implement `GhostEncounterLibraryRoom`. This function tells
 #       the player to hide. If they fail to hide, they lose the game.
-def GhostEncounterLibraryRoom():
-    print("Remove me and add your code here")
-    return True
+def GhostEncounterLibraryRoom(current_room):
+    if current_room == 'Library':
+        print('''Oh no! There's a ghost, you must hide!''')
+        action = input("")
+
+        if action == 'h':
+            hiding = ToggleHide(hiding)
+            print('The ghost has vanished.')
+        else:
+            print('You failed to hide. The ghost has killed you.')
+            Quit()
+
+    return hiding
 
 # TODO: Implement `GhostEncounterGardenRoom`. This function makes
 #       the player lose an item from their inventory. Remember to update

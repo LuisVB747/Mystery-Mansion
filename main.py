@@ -18,7 +18,7 @@ def Main():
             GhostEncounterDinningRoom(current_room)
             ghost_encountered_dining_room = True
         if current_room == 'Library' and not ghost_encountered_library_room:
-            GhostEncounterLibraryRoom()
+            hiding = GhostEncounterLibraryRoom(current_room,hiding)
             ghost_encountered_library_room = True
         if current_room == 'Garden' and not ghost_encountered_garden_room:
             GhostEncounterGardenRoom(inventory)
