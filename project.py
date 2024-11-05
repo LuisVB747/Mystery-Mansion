@@ -22,14 +22,11 @@ from io import IOBase
 #     whether the item has been picked up.
 
 rooms = {
-    'Grand Hall': {'n': 'Attic', 's': 'Library', 'e': 'Dining Room', 'w': None},
+    'Grand Hall': {'n': None, 's': 'Library', 'e': 'Dining Room', 'w': None},
     'Library': {'n': 'Grand Hall', 's': None, 'e': None, 'w': None},
-    'Dining Room': {'n': 'Kitchen', 's': None, 'e': 'Garden', 'w': 'Grand Hall'},
+    'Dining Room': {'n': None, 's': None, 'e': 'Garden', 'w': 'Grand Hall'},
     'Garden': {'n': None, 's': None, 'e': None, 'w': 'Dining Room'},
     'Secret Room': {'n': None, 's': None, 'e': None, 'w': 'Garden'},
-    'Attic': {'n': None, 's': 'Grand Hall', 'e': None, 'w': None},
-    'Kitchen': {'n': None, 's': 'Dining room', 'e': None, 'w': None},
-    'Cellar': {'n': None, 's': None, 'e': 'Kitchen', 'w': None},
     # TODO TASK 4 EXPAND THE HOUSE
 }
 
@@ -38,19 +35,13 @@ room_descriptions = {
     'Library': "You are surrounded by towering ancient books in the Library.",
     'Dining Room': "The dusty Dining Room feels eerily quiet.",
     'Garden': "You find yourself in an overgrown Garden.",
-    'Secret Room': "A mysterious Secret Room with a glowing artifact lies ahead.",
-    'Attic': "It's really dark in here, there's a lot of old dresses laying in the floor.",
-    'Kitchen': "The kitchen seems really empty and creepy, there's a pair of glasses in the middle",
-    'Cellar': "A room full of curious artifacts, one of them catches your attention."
-
+    'Secret Room': "A mysterious Secret Room with a glowing artifact lies ahead."
 }
 
 room_objects = {
     'Library': {'item': 'ancient_book of secrets', 'in_inventory': False},
     'Dining Room': {'item': 'mysterious hidden key', 'in_inventory': False},
     'Secret Room': {'item': 'glowing artifact', 'in_inventory': False},
-    'Attic': {'item': 'Dusty Showl', 'in_inventory': False},
-    'Cellar': {'item': 'Bubbling Drink', 'in_inventory': False},
     # TODO TASK 6 MYSTICAL ARTIFACTS
 }
 
@@ -125,7 +116,7 @@ def Get(current_room, inventory):
 #       player's inventory.
 def ShowInventory(inventory):
     if inventory:
-        print('You currently have: ')
+        print('You currently have:')
         for item in inventory:
             print(f'-{item}')
     else:
@@ -184,10 +175,6 @@ def Quit():
 # TODO: Complete the `ProcessCommand` function. It should check
 #       the player's command and call the respective function.
 def ProcessCommand(command, current_room, inventory, hiding):
-    if hiding and command in ['n', 's', 'e', 'w']:
-        print("You can't move while hiding. You must stop hiding first.")
-        return current_room, hiding
-
     if command == 'm':
         Manual()
     elif command in ['n', 's', 'e', 'w']:
@@ -231,9 +218,20 @@ def GhostEncounterDinningRoom(current_room):
 # TASK 5 MORE GHOSTS -------------------------------------------+
 # TODO: Implement `GhostEncounterLibraryRoom`. This function tells
 #       the player to hide. If they fail to hide, they lose the game.
-def GhostEncounterLibraryRoom(current_room, hiding):
+def GhostEncounterLibraryRoom(current_room):
+    if current_room == 'Library':
+        print('''Oh no! There's a ghost, you must hide!''')
+        action = input("")
 
+        if action == 'h':
+            hiding = ToggleHide(hiding)
+            print('The ghost has vanished.')
+        else:
+            print('You failed to hide. The ghost has killed you.')
+            Quit()
 
+    return hiding
+#asap
 # TODO: Implement `GhostEncounterGardenRoom`. This function makes
 #       the player lose an item from their inventory. Remember to update
 #       the `room_objects` `in_inventory` to false
