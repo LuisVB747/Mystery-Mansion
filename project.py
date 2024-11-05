@@ -175,6 +175,10 @@ def Quit():
 # TODO: Complete the `ProcessCommand` function. It should check
 #       the player's command and call the respective function.
 def ProcessCommand(command, current_room, inventory, hiding):
+    if hiding and command in ['n' , 's', 'e', 'w']:
+        print("You can't move while hiding. You must stop hiding first.")
+        return current_room, hiding
+
     if command == 'm':
         Manual()
     elif command in ['n', 's', 'e', 'w']:
@@ -218,7 +222,7 @@ def GhostEncounterDinningRoom(current_room):
 # TASK 5 MORE GHOSTS -------------------------------------------+
 # TODO: Implement `GhostEncounterLibraryRoom`. This function tells
 #       the player to hide. If they fail to hide, they lose the game.
-def GhostEncounterLibraryRoom(current_room):
+def GhostEncounterLibraryRoom(current_room, hiding):
     if current_room == 'Library':
         print('''Oh no! There's a ghost, you must hide!''')
         action = input("")
