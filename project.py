@@ -22,11 +22,14 @@ from io import IOBase
 #     whether the item has been picked up.
 
 rooms = {
-    'Grand Hall': {'n': None, 's': 'Library', 'e': 'Dining Room', 'w': None},
+    'Grand Hall': {'n': 'Attic', 's': 'Library', 'e': 'Dining Room', 'w': None},
     'Library': {'n': 'Grand Hall', 's': None, 'e': None, 'w': None},
-    'Dining Room': {'n': None, 's': None, 'e': 'Garden', 'w': 'Grand Hall'},
+    'Dining Room': {'n': 'Kitchen', 's': None, 'e': 'Garden', 'w': 'Grand Hall'},
     'Garden': {'n': None, 's': None, 'e': None, 'w': 'Dining Room'},
     'Secret Room': {'n': None, 's': None, 'e': None, 'w': 'Garden'},
+    'Attic': {'n': None, 's': 'Grand Hall', 'e': None, 'w': None},
+    'Kitchen': {'n': None, 's': 'Dining Room', 'e': 'Cellar', 'w': None},
+    'Cellar': {'n': None, 's': None, 'e': None, 'w': 'Kitchen'}
     # TODO TASK 4 EXPAND THE HOUSE
 }
 
@@ -35,13 +38,19 @@ room_descriptions = {
     'Library': "You are surrounded by towering ancient books in the Library.",
     'Dining Room': "The dusty Dining Room feels eerily quiet.",
     'Garden': "You find yourself in an overgrown Garden.",
-    'Secret Room': "A mysterious Secret Room with a glowing artifact lies ahead."
+    'Secret Room': "A mysterious Secret Room with a glowing artifact lies ahead.",
+    'Attic': "A dark Attic, full of dresses and old clothes.",
+    'Kitchen': "You found an abandoned kitchen, theres an old knife laying in the floor.",
+    'Cellar': "It looks like the Cellar was used as a brewing room."
 }
 
 room_objects = {
     'Library': {'item': 'ancient_book of secrets', 'in_inventory': False},
     'Dining Room': {'item': 'mysterious hidden key', 'in_inventory': False},
     'Secret Room': {'item': 'glowing artifact', 'in_inventory': False},
+    'Attic': {'item': ' Dusty Shawl', 'in_inventory': False},
+    'Kitchen': {'item': 'Knife', 'in_inventory': False},
+    'Cellar': {'item': 'Bubbling Drink', 'in_inventory': False }
     # TODO TASK 6 MYSTICAL ARTIFACTS
 }
 
@@ -75,7 +84,15 @@ def Move(current_room, command):
 #       wins the game. If the player is in the 'Grand Hall' and has 5 items
 #       in the inventory, print a victory message and call `exit()`.
 def OpenFrontDoor(inventory, current_room):
-    if current_room == "Grand Hall" and len(inventory) > 5:
+    required_items = {
+        'ancient_book of secrets',
+        'mysterious hidden key',
+        'glowing artifact',
+        'Dusty Shawl',
+        'Bubbling Drink'
+    }
+
+    if current_room == "Grand Hall" and required_items.issubset(inventory):
         print("Congrats, you have opened the front door and finally escaped the house")
         exit()
     else:
