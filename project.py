@@ -231,7 +231,7 @@ def GhostEncounterLibraryRoom(current_room):
             Quit()
 
     return hiding
-
+#asap
 # TODO: Implement `GhostEncounterGardenRoom`. This function makes
 #       the player lose an item from their inventory. Remember to update
 #       the `room_objects` `in_inventory` to false
