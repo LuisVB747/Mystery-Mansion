@@ -5,6 +5,7 @@ from PIL import Image
 import pygame
 import threading
 import cv2
+import time
 pygame.mixer.init()
 # In this assignment, we will work with dictionaries. Dictionaries are a
 # data structure used to store data in key-value pairs.
@@ -66,6 +67,8 @@ room_objects = {
     # TODO TASK 6 MYSTICAL ARTIFACTS
 }
 
+image_path = "original-7F3D4BEB-9CF1-4763-B637-B6919E1285CC.jpeg"
+sound_path = "Grito de mujer aterrada  Efecto de sonido-[AudioTrimmer.com].mp3"
 
 def show_screamer_image(image_path):
     img = cv2.imread(image_path)
@@ -76,7 +79,6 @@ def show_screamer_image(image_path):
 
         cv2.imshow('Screamer!', img)
         cv2.setWindowProperty('Screamer!', cv2.WND_PROP_TOPMOST, 1)
-
 
         cv2.waitKey(3000)
         cv2.destroyAllWindows()
@@ -96,13 +98,13 @@ def trigger_screamer(image_path, sound_path):
     image_thread.join()
     sound_thread.join()
 
-def play_scream_sound():
+def play_scream_sound(sound_path):
     pygame.mixer.init()
-    pygame.mixer.music.load("Grito de mujer aterrada  Efecto de sonido-[AudioTrimmer.com].mp3")
+    pygame.mixer.music.load(sound_path)
     pygame.mixer.music.play()
 
-image_path = "original-7F3D4BEB-9CF1-4763-B637-B6919E1285CC.jpeg"
-sound_path = "Grito de mujer aterrada  Efecto de sonido-[AudioTrimmer.com].mp3"
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
 
 # TASK 1 COMMANDS FUNCTIONS -----------------------------------------------------+
 # Your first task is to implement the functions for each command.
@@ -143,8 +145,9 @@ def OpenFrontDoor(inventory, current_room, boss_fight):
 
     if current_room == "Grand Hall" and required_items.issubset(inventory) and not boss_fight:
         print('''Congrats, you have opened the front door and finally escaped the house
-        You kept walking till you arrive at your house, but before you open the door, you feel that something is watching you''')
-        play_scream_sound()
+    You kept walking till you arrive at your house, but before you open the door, you feel that something is watching you''')
+        time.sleep(3)
+        play_scream_sound(sound_path)
         print("The End?")
         exit()
     elif current_room == "Grand Hall" and required_items.issubset(inventory) and boss_fight:
