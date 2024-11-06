@@ -86,12 +86,6 @@ def show_screamer_image(image_path):
     else:
         print("Error loading image.")
 
-
-def play_scream_sound():
-    pygame.mixer.music.load(sound_path)
-    pygame.mixer.music.play()
-
-
 def trigger_screamer(image_path, sound_path):
     image_thread = threading.Thread(target=show_screamer_image, args=(image_path,))
     sound_thread = threading.Thread(target=play_scream_sound, args=(sound_path,))
@@ -294,17 +288,7 @@ def ProcessCommand(command, current_room, inventory, hiding, boss_fight):
             current_room = OpenBossRoom(current_room, inventory)
         else:
             current_room = Move(current_room, command)
-        # Trigger specific ghost interactions after moving
-        if current_room == 'Dining Room':
-            GhostEncounterDinningRoom(current_room)
-        elif current_room == 'Library':
-            hiding = GhostEncounterLibraryRoom(current_room, hiding)
-        elif current_room == 'Garden':
-            GhostEncounterGardenRoom(inventory)
-        elif current_room == 'Ballroom':
-            BallRoomGhost(current_room, inventory)
-        elif current_room == 'Boss Room':
-            BossFight(current_room, inventory, hiding)
+
         return current_room, hiding
 
     elif command == 'm':
