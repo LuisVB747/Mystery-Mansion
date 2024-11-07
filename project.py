@@ -354,7 +354,7 @@ def GhostEncounterLibraryRoom(current_room, hiding):
 #       the player lose an item from their inventory. Remember to update
 #       the `room_objects` `in_inventory` to false
 def GhostEncounterGardenRoom(inventory):
-    print("Remove me and add your code here")
+    print("")
 
 def BallRoomGhost(current_room, inventory):
     if current_room == 'Ballroom' and 'Knife' in inventory:
