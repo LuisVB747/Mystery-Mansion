@@ -1,11 +1,11 @@
 # Hello, Introduction to Programming Students! Welcome to PA2!
 # Your task is to implement the necessary functions in this file.
-from io import IOBase
-from PIL import Image
+
 import pygame
 import threading
 import cv2
 import time
+import random
 pygame.mixer.init()
 # In this assignment, we will work with dictionaries. Dictionaries are a
 # data structure used to store data in key-value pairs.
@@ -354,7 +354,28 @@ def GhostEncounterLibraryRoom(current_room, hiding):
 #       the player lose an item from their inventory. Remember to update
 #       the `room_objects` `in_inventory` to false
 def GhostEncounterGardenRoom(inventory):
-    print("")
+    required_items = {
+        'ancient_book of secrets',
+        'mysterious hidden key',
+        'glowing artifact',
+        'Dusty Shawl',
+        'Bubbling Drink'
+    }
+
+    if len(inventory) > 0:
+        items_to_remove = [item for item in inventory if item in required_items]
+
+        if items_to_remove:
+            lost_item = random.choice(items_to_remove)
+            inventory.remove(lost_item)
+            print(f"A ghost charges at you. It has stolen your {lost_item}!")
+
+            for room, item_desc in room_objects.items():
+                if item_desc['item'] == lost_item:
+                    item_desc['in_inventory'] = False
+    else:
+        print("You have no important items in your inventory. So the ghost just laughed at you and dissapeared")
+
 
 def BallRoomGhost(current_room, inventory):
     if current_room == 'Ballroom' and 'Knife' in inventory:
