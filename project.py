@@ -51,7 +51,7 @@ room_descriptions = {
     'Kitchen': "You found an abandoned kitchen, theres an old knife laying in the floor.",
     'Cellar': "It looks like the Cellar was used as a brewing room.",
     'Ballroom': "You enter a beautiful ballroom",
-    'Mirror Room': "A wonderful place, beautiful for those who don't hate looking at themselves",
+    'Mirror Room': "A Mirror room, a wonderful place for those who don't hate looking at themselves",
     'Boss Room': 'You step into a dark, foreboding chamber with ominous symbols carved into the walls. The air feels heavy.'
 }
 
@@ -145,8 +145,12 @@ def OpenFrontDoor(inventory, current_room, boss_fight):
 
     if current_room == "Grand Hall" and required_items.issubset(inventory) and not boss_fight:
         print('''Congrats, you have opened the front door and finally escaped the house
-    You kept walking till you arrive at your house, but before you open the door, you feel that something is watching you''')
-        time.sleep(3)
+You kept walking till you arrive at your house, but before you open the door, you feel that something is watching you''')
+        time.sleep(1)
+        print("Something is getting close")
+        time.sleep(1)
+        print("Its almost here")
+        time.sleep(2)
         play_scream_sound(sound_path)
         print("The End?")
         exit()
@@ -154,17 +158,18 @@ def OpenFrontDoor(inventory, current_room, boss_fight):
         print('''Congrats, after a long journey, and a tiresome fight, you have opened the front door and finally escaped the house''')
         exit()
     else:
-        print("You can't open the front door yet. Make sure you're in the Grand Hall and have 5 items.")
+        print("You can't open the front door yet. Make sure you're in the Grand Hall and have the 5 main quest items.")
 
 
 # TODO: Implement `OpenSecretRoom`. This function opens the secret room
 #       if the player is in the Garden and possesses the "mysterious hidden key".
 def OpenSecretRoom(current_room, inventory):
     if current_room == "Garden" and "mysterious hidden key" in inventory:
-        print("You have unlocked the secret room")
+        print("You feel a sudden chill and notice something odd about the vines on the wall. They part to reveal a doorway...")
+        print(room_descriptions['Secret Room'])
         return "Secret Room"
     else:
-        print("You can't open the Secret Room yet.")
+        print("Something feels out of place here, but you can't seem to find a way through.")
         return current_room
 
 
@@ -237,7 +242,6 @@ def ToggleHide(hiding):
         print("You're in trouble now")
         return False
 
-
     else:
         print("You're now one with the shadows")
         return True
@@ -289,6 +293,8 @@ def ProcessCommand(command, current_room, inventory, hiding, boss_fight):
     if command in ['n', 's', 'e', 'w']:
         if current_room == "Kitchen" and command == 'n':
             current_room = OpenBossRoom(current_room, inventory)
+        elif current_room == "Garden" and command == 'e':
+            current_room = OpenSecretRoom(current_room, inventory)
         else:
             current_room = Move(current_room, command)
 
@@ -320,7 +326,7 @@ def GhostEncounterDinningRoom(current_room):
         with my haunting, presence, I bring fright.
         Count the bones of the dead, you'll see,
         What number am I, as eerie as can be?"''')
-        answer = input('What will you respond?')
+        answer = input("")
         if answer != '206':
             print("You're wrong. The ghost has decided to kill you because of your ignorance")
             Quit()
@@ -366,6 +372,7 @@ def BallRoomGhost(current_room, inventory):
     else:
         print("Nothing special happens here.")
 
+
 def BossFight(current_room, inventory, hiding):
     if current_room == 'Boss Room':
         print("The Banshee roars as you step into the room. Its eyes blaze with fury.")
@@ -376,36 +383,46 @@ def BossFight(current_room, inventory, hiding):
             hiding = ToggleHide(hiding)
             if hiding:
                 print("You press yourself against the wall, holding your breath. The Banshee stumbles around, unable to find you.")
+            else:
+                print("You failed to hide properly. The Banshee finds you. You have been killed.")
+                Quit()
         else:
             print("You fail to hide in time, and the Banshee finds you. You have been killed.")
             Quit()
 
-        print('''The creature begins to search for you. You look at the broken piece of mirror in your inventory, and remembered what the ghost told you.
-        Will you surprise the Banshee with the mirror? (Press u to use the mirror)''')
+        print('''The Banshee begins to search for you. You look at the broken piece of mirror in your inventory and remember what the ghost told you.
+        Will you surprise the Banshee with the mirror? (Unhide first, then press 'u' to use the mirror)''')
+
+        while hiding:
+            action = input("You cant attack while hiding")
+            if action == 'h':
+                hiding = ToggleHide(hiding)
+                if not hiding:
+                    print("You step out from hiding, ready to confront the Banshee.")
+
         action = input("")
-        if action == "u":
-            print('''You hold up the broken piece of mirror, catching the Banshee's gaze. It freezes, staring at its reflection with terror.)
+        if action == 'u':
+            print('''You hold up the broken piece of mirror, catching the Banshee's gaze. It freezes, staring at its reflection with terror.
             She lets out a guttural scream and reels back, weakened and vulnerable.''')
         else:
-            print('''You hesitate, and the creature recovers from its confusion. You have lost your chance.
-            You have been killed''')
+            print("You hesitate to use the mirror, and the creature recovers from its confusion. You have been killed.")
             Quit()
 
-        print("You need to hide again before it recovers!")
-        action = input("What will you do? (h = hide) ")
+        print("In an act of desperation, the Banshee blindly starts to tear down the room, you need to hide so that her attacks don't get to you.")
+        action = input("")
         if action == 'h':
             hiding = ToggleHide(hiding)
             if hiding:
-                print("You slip back into the shadows, avoiding its flailing limbs.")
+                print("You slip back into the shadows, avoiding her blind attacks.")
             else:
-                print("You are too slow, and the creature catches sight of you. You have been Killed.")
+                print("You are too slow, and she catches sight of you. You have been killed.")
                 Quit()
 
-        print("The creature is disoriented and vulnerable. Now is your chance to finish it!")
-        action = input("What will you do? (k = use the knife) ")
+        print("The Banshee is disoriented and vulnerable. Now is your chance to finish it!. ('K' to use the knife)")
+        action = input("")
         if action == 'k':
-            print('''With a burst of courage, you lunge forward and strike with the knife. The creature lets out a final, guttural wail and collapses.")
-            You stand victorious, the nightmare is over.''')
+            print('''With a burst of courage, you lunge forward and strike with the knife. The Banshee lets out a final, guttural wail and collapses.
+            You stand victorious; the nightmare is over.''')
         else:
-            print("You hesitate, and the creature recovers its strength. You have been killed.")
+            print("You hesitate, and she recovers her strength. You have been killed.")
             Quit()
