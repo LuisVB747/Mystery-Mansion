@@ -31,16 +31,17 @@ rooms = {
     'Library': {'n': 'Grand Hall', 's': None, 'e': None, 'w': 'Ballroom'},
     'Dining Room': {'n': 'Kitchen', 's': None, 'e': 'Garden', 'w': 'Grand Hall'},
     'Garden': {'n': None, 's': 'Mirror Room', 'e': 'Secret Room', 'w': 'Dining Room'},
-    'Secret Room': {'n': None, 's': None, 'e': None, 'w': 'Garden'},
-    'Attic': {'n': None, 's': 'Grand Hall', 'e': None, 'w': None},
+    'Secret Room': {'n': None, 's': 'NapstaRoom', 'e': None, 'w': 'Garden'},
+    'Attic': {'n': None, 's': 'Grand Hall', 'e': None, 'w': "Kefka's Lair"},
     'Kitchen': {'n': 'Boss Room', 's': 'Dining Room', 'e': 'Cellar', 'w': None},
     'Cellar': {'n': None, 's': None, 'e': None, 'w': 'Kitchen'},
     'Ballroom': {'n': None, 's': None, 'e': 'Library', 'w': None},
     'Mirror Room': {'n': 'Garden', 's': None, 'e': None, 'w': None},
-    'Boss Room': {'n': None, 's': 'Kitchen', 'e': None, 'w': None}
-    # TODO TASK 4 EXPAND THE HOUSE
+    'Boss Room': {'n': None, 's': 'Kitchen', 'e': None, 'w': None},
+    'NapstaRoom': {'n': 'Secret Room', 's': None, 'e': None, 'w': None},
+    "Kefka's Lair": {'n': None, 's': None, 'e': 'Attic', 'w': None}
 }
-
+# TODO TASK 4 EXPAND THE HOUSE
 room_descriptions = {
     'Grand Hall': "You stand in the majestic Grand Hall.",
     'Library': "You are surrounded by towering ancient books in the Library.",
@@ -52,7 +53,9 @@ room_descriptions = {
     'Cellar': "It looks like the Cellar was used as a brewing room.",
     'Ballroom': "You enter a beautiful ballroom",
     'Mirror Room': "A Mirror room, a wonderful place for those who don't hate looking at themselves",
-    'Boss Room': 'You step into a dark, foreboding chamber with ominous symbols carved into the walls. The air feels heavy.'
+    'Boss Room': 'You step into a dark, foreboding chamber with ominous symbols carved into the walls. The air feels heavy.',
+    'NapstaRoom': 'An empty room with a single ghost laying in the floor',
+    "Kefka's Lair": 'A twisted chamber with the words "Kefkas Lair" written in a wall. Theres a lot of curious artifacts laying in the room>'
 }
 
 room_objects = {
@@ -64,7 +67,13 @@ room_objects = {
     'Cellar': {'item': 'Bubbling Drink', 'in_inventory': False },
     'Ballroom': {'item': 'Spectral Key', 'in_inventory': False},
     'Mirror Room': {'item': 'Broken piece of mirror', 'in_inventory': False},
+    "Kefka's Lair": {"item": "Clown Mask and Esper's pendant", 'in_inventory': False}
     # TODO TASK 6 MYSTICAL ARTIFACTS
+}
+achievements = {
+    'NapstaFight': {'Description': 'Tried to fight a ghost', 'completed': False},
+    'Free of curses': {'Description': 'Defeated the Banshee', 'completed': False},
+    'Echoes of a forgotten past': {'Description': "Obtain Kefka's mask and Terra's pendant", 'completed': False},
 }
 
 image_path = "original-7F3D4BEB-9CF1-4763-B637-B6919E1285CC.jpeg"
@@ -204,7 +213,10 @@ def Get(current_room, inventory):
             if current_room == 'Kitchen' and item_info["item"] == 'Knife':
                 trigger_screamer("original-7F3D4BEB-9CF1-4763-B637-B6919E1285CC.jpeg",
                                  "Grito de mujer aterrada  Efecto de sonido-[AudioTrimmer.com].mp3")
-
+            if current_room == "Kefka's Lair" and item_info['item'] == "Clown Mask and Esper's pendant":
+                comp = achievements['Echoes of a forgotten past']
+                comp['completed'] = True
+                print("*Achievement Completed*")
         else:
             print("You've already picked up this item.")
 
@@ -246,6 +258,15 @@ def ToggleHide(hiding):
         print("You're now one with the shadows")
         return True
 
+def ShowAchievements(achievements):
+    print("Achievements:")
+    for achievement, details in achievements.items():
+        if details['completed']:
+            print(f"- {achievement}:")
+            print(f" *{details['Description']}*")
+        else:
+            print("- Achievement locked")
+
 
 # Available Commands -------------------------------------------+
 # This function displays all possible player commands.
@@ -263,6 +284,7 @@ def Manual():
         "h = hide/unhide\n"
         "m = show commands\n"
         "q = quit the game\n"
+        "a = show achievements\n"
     )
 
 
@@ -312,6 +334,8 @@ def ProcessCommand(command, current_room, inventory, hiding, boss_fight):
         Read(inventory)
     elif command == 'h':
         hiding = ToggleHide(hiding)
+    elif command == 'a':
+        ShowAchievements(achievements)
     else:
         print("Invalid command.")
     return current_room, hiding
@@ -393,6 +417,35 @@ def BallRoomGhost(current_room, inventory):
     else:
         print("Nothing special happens here.")
 
+def NapstaFight(current_room):
+    print("You approach the ghost. Do you wanna fight it? (press f to fight)")
+    action = input(">")
+    if action == 'f':
+        print("*Napstablook lost 5 health points*")
+        time.sleep(1)
+        print('''Napstablook: "I'm fine, thanks"''')
+        time.sleep(1)
+        print('''Napstablook: "Umm... you do know you cant kill ghosts right?"''')
+        time.sleep(1)
+        print('''Napstablook: "We're sorta incorporeal and all that"''')
+        time.sleep(1)
+        print('''Napstablook: "I was just lowering my hp cause i didnt want to be rude"''')
+        print("*You both stare at each other*")
+        time.sleep(3)
+        print('''Napstablook: "sorry... I just made this more awkward."''')
+        time.sleep(1)
+        print('''Napstablook: "pretend you beat me"''')
+        time.sleep(1)
+        print('''Napstablook: "oooooooooooooo"''')
+        time.sleep(1)
+        print('*he went back to contemplate life*')
+        comp = achievements['NapstaFight']
+        comp['completed'] = True
+        print("*Achievement Completed*")
+
+    else:
+        print("Napstablook stays there, contemplating life")
+    return current_room
 
 def BossFight(current_room, inventory, hiding):
     if current_room == 'Boss Room':
