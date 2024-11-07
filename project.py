@@ -20,6 +20,7 @@ from io import IOBase
 #     a dictionary. One key is `item`, which stores the name of the item
 #     in the room, and another key is `in_inventory`, a boolean indicating
 #     whether the item has been picked up.
+import random
 
 rooms = {
     'Grand Hall': {'n': None, 's': 'Library', 'e': 'Dining Room', 'w': None},
@@ -239,5 +240,11 @@ def GhostEncounterLibraryRoom(current_room, hiding):
 # TODO: Implement `GhostEncounterGardenRoom`. This function makes
 #       the player lose an item from their inventory. Remember to update
 #       the `room_objects` `in_inventory` to false
-def GhostEncounterGardenRoom(inventory):
+def GhostEncounterGardenRoom(current_room, inventory):
+    main_items = {
+
+    }
+
+
+
     print("Remove me and add your code here")
