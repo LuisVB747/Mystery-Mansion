@@ -1,5 +1,5 @@
 from project import (ProcessCommand, room_descriptions, GhostEncounterGardenRoom,
-                     GhostEncounterLibraryRoom, GhostEncounterDinningRoom, BossFight, BallRoomGhost)
+                     GhostEncounterLibraryRoom, GhostEncounterDinningRoom, BossFight, BallRoomGhost, NapstaFight)
 
 def Main():
     current_room = 'Grand Hall'
@@ -8,6 +8,7 @@ def Main():
     ghost_encountered_library_room = False
     ghost_encountered_garden_room = False
     ghost_encountered_ballroom = False
+    napstablook_encountered = False
     boss_fight = False
     hiding = False
 
@@ -31,5 +32,8 @@ def Main():
         if current_room == "Ballroom" and not ghost_encountered_ballroom:
             BallRoomGhost(current_room, inventory)
             ghost_encountered_ballroom = True
+        if current_room == "NapstaRoom" and not napstablook_encountered:
+            NapstaFight(current_room)
+            napstablook_encountered = True
 print("Welcome to the Haunted Manor Mystery!")
 Main()
