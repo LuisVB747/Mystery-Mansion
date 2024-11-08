@@ -135,6 +135,7 @@ def Move(current_room, command):
         if next_room is not None:
             current_room = next_room
             print(room_descriptions[current_room])
+
         else:
             print("You can't go that way.")
     else:
@@ -234,7 +235,7 @@ def Get(current_room, inventory, room_objects):
                 trigger_screamer("original-7F3D4BEB-9CF1-4763-B637-B6919E1285CC.jpeg",
                                  "Grito de mujer aterrada  Efecto de sonido-[AudioTrimmer.com].mp3")
 
-                # play_scream_sound("Undertale OST - Waterfall Extended.mp3")
+
 
             if current_room == "Kefka's Lair" and item_info["item"] == "Clown Mask and Esper's pendant":
                 achievements['Echoes of a forgotten past']['completed'] = True
