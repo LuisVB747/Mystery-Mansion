@@ -125,6 +125,10 @@ def play_scream_sound(sound_path):
 #       room's description (use `room_descriptions`). If invalid,
 #       print "You can't go that way."
 def Move(current_room, command):
+    if current_room not in rooms:
+        print("Error: current_room not found.")
+        return current_room
+
     if command in ['n', 's', 'e', 'w']:
         next_room = rooms[current_room].get(command)
 
@@ -132,12 +136,11 @@ def Move(current_room, command):
             current_room = next_room
             print(room_descriptions[current_room])
         else:
-            print('You cant go that way.')
+            print("You can't go that way.")
     else:
-        print("Invalid command. Use 'n', 's', 'e', or 'w'")
+        print("Invalid command. Use 'n', 's', 'e', or 'w'.")
 
     return current_room
-    #done
 
 
 # TODO: Implement `OpenFrontDoor`. This function checks if the player
@@ -202,28 +205,46 @@ def OpenBossRoom(current_room, inventory):
 # TODO: Implement `Get`. This function allows the player to pick up an item
 #       in the current room, if it hasn't been picked up yet. Add the item
 #       to the player's inventory and mark it as collected.
-def Get(current_room, inventory):
+def Get(current_room, inventory, room_objects):
     if current_room in room_objects:
         item_info = room_objects[current_room]
-        if not item_info['in_inventory']:
+
+        # Check if the item is already in the inventory
+        if item_info['in_inventory']:
+            print("You've already picked up this item.")
+            return current_room
+
+        # Handling specific room logic (like the Ballroom with the Knife)
+        if current_room == "Ballroom":
+            if "Knife" in inventory:
+                inventory.append(item_info["item"])
+                item_info['in_inventory'] = True
+                print(f"You have picked up: {item_info['item']}")
+            else:
+                print("There's nothing here. You need the Knife first.")
+
+        else:
+            # General pickup logic for other rooms
             inventory.append(item_info["item"])
             item_info['in_inventory'] = True
             print(f"You have picked up: {item_info['item']}")
 
+            # Trigger specific events (e.g., sound effects) based on the item or room
             if current_room == 'Kitchen' and item_info["item"] == 'Knife':
                 trigger_screamer("original-7F3D4BEB-9CF1-4763-B637-B6919E1285CC.jpeg",
                                  "Grito de mujer aterrada  Efecto de sonido-[AudioTrimmer.com].mp3")
-            if current_room == "Kefka's Lair" and item_info['item'] == "Clown Mask and Esper's pendant":
-                comp = achievements['Echoes of a forgotten past']
-                comp['completed'] = True
+
+            if current_room == "Kefka's Lair" and item_info["item"] == "Clown Mask and Esper's pendant":
+                achievements['Echoes of a forgotten past']['completed'] = True
                 print("*Achievement Completed*")
-        else:
-            print("You've already picked up this item.")
 
     else:
-        print("There are no items here")
+        print("There are no items here.")
+
+
 
     return current_room
+
 
 # TODO: Implement `ShowInventory`. This function displays all items in the
 #       player's inventory.
@@ -327,7 +348,7 @@ def ProcessCommand(command, current_room, inventory, hiding, boss_fight):
     elif command == 'q':
         Quit()
     elif command == 'g':
-        current_room = Get(current_room, inventory)
+        current_room = Get(current_room, inventory, room_objects)
     elif command == 'i':
         ShowInventory(inventory)
     elif command == 'r':
@@ -350,7 +371,7 @@ def GhostEncounterDinningRoom(current_room):
         with my haunting, presence, I bring fright.
         Count the bones of the dead, you'll see,
         What number am I, as eerie as can be?"''')
-        answer = input("")
+        answer = input("> ")
         if answer != '206':
             print("You're wrong. The ghost has decided to kill you because of your ignorance")
             Quit()
@@ -410,7 +431,7 @@ def BallRoomGhost(current_room, inventory):
         action = input('')
 
         if action == 'g':
-            Get(current_room, inventory)
+            Get(current_room, inventory, room_objects)
             print('''This is a Spectral Key, it will help you unlock the door north of the kitchen.
             Only do it if you're prepared for a fight. And before you go, that "Thing" does not like its apperance
             so have that in mind *He winks and dissapears*''')
@@ -422,22 +443,22 @@ def NapstaFight(current_room):
     action = input(">")
     if action == 'f':
         print("*Napstablook lost 5 health points*")
-        time.sleep(1)
+        time.sleep(2)
         print('''Napstablook: "I'm fine, thanks"''')
-        time.sleep(1)
+        time.sleep(2)
         print('''Napstablook: "Umm... you do know you cant kill ghosts right?"''')
-        time.sleep(1)
+        time.sleep(2)
         print('''Napstablook: "We're sorta incorporeal and all that"''')
-        time.sleep(1)
+        time.sleep(2)
         print('''Napstablook: "I was just lowering my hp cause i didnt want to be rude"''')
         print("*You both stare at each other*")
-        time.sleep(3)
+        time.sleep(4)
         print('''Napstablook: "sorry... I just made this more awkward."''')
-        time.sleep(1)
+        time.sleep(2)
         print('''Napstablook: "pretend you beat me"''')
-        time.sleep(1)
+        time.sleep(2)
         print('''Napstablook: "oooooooooooooo"''')
-        time.sleep(1)
+        time.sleep(2)
         print('*he went back to contemplate life*')
         comp = achievements['NapstaFight']
         comp['completed'] = True
