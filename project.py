@@ -234,6 +234,8 @@ def Get(current_room, inventory, room_objects):
                 trigger_screamer("original-7F3D4BEB-9CF1-4763-B637-B6919E1285CC.jpeg",
                                  "Grito de mujer aterrada  Efecto de sonido-[AudioTrimmer.com].mp3")
 
+                # play_scream_sound("Undertale OST - Waterfall Extended.mp3")
+
             if current_room == "Kefka's Lair" and item_info["item"] == "Clown Mask and Esper's pendant":
                 achievements['Echoes of a forgotten past']['completed'] = True
                 print("*Achievement Completed*")
@@ -518,6 +520,9 @@ def BossFight(current_room, inventory, hiding):
         if action == 'k':
             print('''With a burst of courage, you lunge forward and strike with the knife. The Banshee lets out a final, guttural wail and collapses.
             You stand victorious; the nightmare is over.''')
+            comp = achievements['Free of curses']
+            comp['completed'] = True
+            print("*Achievement Completed*")
         else:
             print("You hesitate, and she recovers her strength. You have been killed.")
             Quit()
